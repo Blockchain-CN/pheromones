@@ -30,6 +30,7 @@ func NewServer(p Protocal, to time.Duration) *Server {
 func (s *Server) ListenAndServe(addr string) error {
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
+		println(err.Error())
 		return err
 	}
 	for {

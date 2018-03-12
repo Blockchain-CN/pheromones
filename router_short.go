@@ -93,15 +93,15 @@ func (r *SRouter) DispatchAll(msg []byte) map[string][]byte {
 			l.Lock()
 			resps[name] = resp
 			l.Unlock()
-		}(k, v.Addr)
+		}(k, v.(EndPointS).Addr)
 	}
 	r.Wait()
 	return resps
 }
 
 // clone
-func (r *SRouter) FetchPeers() map[string]EndPointS {
-	p2 := make(map[string]EndPointS)
+func (r *SRouter) FetchPeers() map[string]interface{} {
+	p2 := make(map[string]interface{})
 	r.RLock()
 	defer r.RUnlock()
 	for k, v := range r.Pool {

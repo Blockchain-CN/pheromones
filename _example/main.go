@@ -34,8 +34,8 @@ const (
 )
 
 func main() {
-	//mainShort()
-	mainPeriment()
+	mainShort()
+	//mainPeriment()
 }
 
 func mainShort() {

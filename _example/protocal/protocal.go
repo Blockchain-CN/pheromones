@@ -64,12 +64,14 @@ func (p *Protocal) Handle(c net.Conn, msg []byte) ([]byte, error) {
 	resp.Name = p.HostName
 	switch req.Operation {
 	case ConnectReq:
+		println("????????????___1")
 		subReq := &MsgGreetingReq{}
 		err := json.Unmarshal(req.Data, subReq)
 		if err != nil {
 			return nil, p2p.Error(p2p.ErrMismatchProtocalResp)
 		}
 		if cType == p2p.ShortConnection {
+			println("????????????___@")
 			err = p.Router.AddRoute(req.Name, subReq.Addr)
 		} else {
 			if p.Router.AddRoute(req.Name, c) == nil {
