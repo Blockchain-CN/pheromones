@@ -99,7 +99,7 @@ func (r *PRouter) DispatchAll(msg []byte) map[string][]byte {
 }
 
 // 获取全部对象
-func (r *PRouter) fetchPeers() map[string]interface{} {
+func (r *PRouter) FetchPeers() map[string]interface{} {
 	p2 := make(map[string]interface{})
 	r.RLock()
 	defer r.RUnlock()

@@ -30,4 +30,7 @@ type Router interface {
 
 	// 单点发送信息
 	Dispatch(name string, msg []byte) ([]byte, error)
+
+	// 获取全部peer
+	FetchPeers() map[string]interface{}
 }

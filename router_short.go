@@ -12,8 +12,8 @@ import (
 )
 
 // 短连接对象
-type endPointS struct {
-	addr string
+type EndPointS struct {
+	Addr string
 }
 
 // SRouter 短连接路由
@@ -22,14 +22,14 @@ type SRouter struct {
 	sync.WaitGroup
 	to time.Duration
 	// 短链接池
-	Pool map[string]endPointS
+	Pool map[string]EndPointS
 }
 
 // NewSRouter 建立短连接路由
 func NewSRouter(to time.Duration) *SRouter {
 	var r SRouter
 	r.to = to
-	r.Pool = make(map[string]endPointS, 0)
+	r.Pool = make(map[string]EndPointS, 0)
 	return &r
 }
 
@@ -44,7 +44,7 @@ func (r *SRouter) AddRoute(name string, addr interface{}) error {
 	}
 	r.RLock()
 	if a, ok := r.Pool[name]; ok {
-		if a.addr == addr.(string) {
+		if a.Addr == addr.(string) {
 			return Error(ErrRemoteSocketExist)
 		}
 	}
@@ -52,7 +52,7 @@ func (r *SRouter) AddRoute(name string, addr interface{}) error {
 	fmt.Printf("添加路由, peername=@%s@||peeraddress=%s\n", name, addr.(string))
 	r.Lock()
 	defer r.Unlock()
-	r.Pool[name] = endPointS{addr.(string)}
+	r.Pool[name] = EndPointS{addr.(string)}
 	return nil
 }
 
@@ -73,7 +73,7 @@ func (r *SRouter) GetConnType() ConnType {
 // DispatchAll 广播消息
 func (r *SRouter) DispatchAll(msg []byte) map[string][]byte {
 	var l sync.Mutex
-	peers := r.fetchPeers()
+	peers := r.FetchPeers()
 	resps := make(map[string][]byte)
 	for k, v := range peers {
 		r.Add(1)
@@ -93,15 +93,15 @@ func (r *SRouter) DispatchAll(msg []byte) map[string][]byte {
 			l.Lock()
 			resps[name] = resp
 			l.Unlock()
-		}(k, v.addr)
+		}(k, v.Addr)
 	}
 	r.Wait()
 	return resps
 }
 
 // clone
-func (r *SRouter) fetchPeers() map[string]endPointS {
-	p2 := make(map[string]endPointS)
+func (r *SRouter) FetchPeers() map[string]EndPointS {
+	p2 := make(map[string]EndPointS)
 	r.RLock()
 	defer r.RUnlock()
 	for k, v := range r.Pool {
@@ -116,18 +116,18 @@ func (r *SRouter) Dispatch(name string, msg []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return r.dispatch(peer.addr, msg)
+	return r.dispatch(peer.Addr, msg)
 }
 
 // clone
-func (r *SRouter) getPeer(name string) (*endPointS, error) {
-	p2 := &endPointS{}
+func (r *SRouter) getPeer(name string) (*EndPointS, error) {
+	p2 := &EndPointS{}
 	r.RLock()
 	defer r.RUnlock()
 	if _, ok := r.Pool[name]; !ok {
 		return p2, Error(ErrUnknuowPeer)
 	}
-	p2.addr = r.Pool[name].addr
+	p2.Addr = r.Pool[name].Addr
 	return p2, nil
 }
 
