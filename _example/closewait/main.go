@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var varc net.Conn
+
 func main() {
 	go Serve()
 	time.Sleep(time.Second)
@@ -22,6 +24,9 @@ func main() {
 	fmt.Printf("client say: n=%d||err=%v\n", n, err)
 	n, err = c.Write([]byte("22222"))
 	fmt.Printf("client say: n=%d||err=%v\n", n, err)
+	time.Sleep(time.Second)
+	err = varc.Close()
+	fmt.Printf("server say: err=%v\n", err)
 	for {
 		time.Sleep(time.Second)
 	}
@@ -38,6 +43,7 @@ func Serve() {
 		if err != nil {
 			println("accept connect fail.")
 		}
+		varc = c
 		println("server say: ", c.LocalAddr().String(), "connect with ", c.RemoteAddr().String())
 		go IOLoop(c)
 	}
@@ -64,4 +70,3 @@ func read(r io.Reader) ([]byte, error) {
 	// read读出来的是[]byte("abcdefg"+0x00)，带一个结束符，需要去掉
 	return buf[:n], nil
 }
-

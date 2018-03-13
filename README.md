@@ -160,6 +160,8 @@ func (p *Protocal) IOLoop(c net.Conn) {
     for {
         msg, err := p.read(c)
         if err != nil {
+            // 在连接失败或者err=EOF(对方关闭连接之后，己方也要关闭)
+            c.Close()
             return
         }
         resp, err := p.Handle(c, msg)
