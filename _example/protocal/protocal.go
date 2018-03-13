@@ -115,6 +115,7 @@ func (p *Protocal) IOLoop(c net.Conn) {
 	for {
 		msg, err := p.read(c)
 		if err != nil {
+			c.Close()
 			return
 		}
 		fmt.Printf("长连接收到信息, localhost=%s||remotehost=%s||msg=%s\n", c.LocalAddr(), c.RemoteAddr(), string(msg))
