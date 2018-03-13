@@ -17,6 +17,9 @@ func main() {
 	fmt.Printf("client say: n=%d||err=%v\n", n, err)
 	time.Sleep(time.Second *3)
 	c.Close()
+	buf := make([]byte, 10000)
+	n, err = c.Read(buf)
+	fmt.Printf("client say: n=%d||err=%v\n", n, err)
 	n, err = c.Write([]byte("22222"))
 	fmt.Printf("client say: n=%d||err=%v\n", n, err)
 	for {
