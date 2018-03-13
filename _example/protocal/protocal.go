@@ -50,6 +50,10 @@ func NewProtocal(name string, r p2p.Router, to time.Duration) *Protocal {
 	return &Protocal{name, r, to}
 }
 
+func (p *Protocal) GetConnType() p2p.ConnType {
+	return p.Router.GetConnType()
+}
+
 func (p *Protocal) Handle(c net.Conn, msg []byte) ([]byte, error) {
 	cType := p.Router.GetConnType()
 	req := &p2p.MsgPto{}

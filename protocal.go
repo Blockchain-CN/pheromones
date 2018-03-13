@@ -15,6 +15,9 @@ type MsgPto struct {
 
 // Protocal 路由数据解析协议
 type Protocal interface {
+	// 获取协议的链接类型
+	GetConnType() ConnType
+
 	// 解析请求通信内容,并返回数据,双工协议
 	Handle(c net.Conn, msg []byte) ([]byte, error)
 }

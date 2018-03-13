@@ -8,7 +8,7 @@ type ConnType int
 
 const (
 	// PersistentConnection 长连接方式
-	PersistentConnection = iota
+	PersistentConnection ConnType = iota
 	// ShortConnection 短连接方式
 	ShortConnection
 )

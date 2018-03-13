@@ -51,6 +51,11 @@ func (s *Server) ListenAndServe(addr string) error {
 }
 
 func (s *Server) handler(c net.Conn) {
+	defer func() {
+		if s.proto.GetConnType() == ShortConnection{
+			c.Close()
+		}
+	}()
 	msg, err := s.read(c, s.to)
 	fmt.Printf("收到请求, localhost=%s||remotehost=%s||msg=%s\n", c.LocalAddr(), c.RemoteAddr(), string(msg))
 	if err != nil {

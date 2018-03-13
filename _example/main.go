@@ -48,13 +48,13 @@ func mainShort() {
 	r2 := p2p.NewSRouter(timeout)
 	p2 := pto.NewProtocal("yoghurt", r2, timeout)
 	s2 := p2p.NewServer(p2, timeout)
-	println("h2 监听 12345")
+	println("h2 监听 12346")
 	go s2.ListenAndServe("127.0.0.1:12346")
 
 	r3 := p2p.NewSRouter(timeout)
 	p3 := pto.NewProtocal("diudiu", r3, timeout)
 	s3 := p2p.NewServer(p3, timeout)
-	println("h3 监听 12345")
+	println("h3 监听 12347")
 	go s3.ListenAndServe("127.0.0.1:12347")
 
 	time.Sleep(time.Second)
