@@ -62,8 +62,8 @@ func (s *Server) handler(c net.Conn) {
 		return
 	}
 	resp, err := s.proto.Handle(c, msg)
-	if err != nil {
-		resp = []byte("params error")
+	if err != nil || resp == nil {
+		resp = nil
 	}
 	c.SetWriteDeadline(time.Now().Add(s.to))
 	for i := 0; i < 3; i++ {
